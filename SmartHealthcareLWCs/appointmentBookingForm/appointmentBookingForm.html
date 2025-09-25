@@ -1,0 +1,12 @@
+<template>
+    <lightning-card title="Book Appointment">
+        <lightning-messages></lightning-messages>
+        <lightning-record-edit-form object-api-name="Appointment__c" onsuccess={handleSuccess}>
+            <lightning-input-field field-name="Patient__c"></lightning-input-field>
+            <lightning-input-field field-name="Doctor__c"></lightning-input-field>
+            <lightning-input-field field-name="Appointment_Date__c"></lightning-input-field>
+            <lightning-input-field field-name="Reason__c"></lightning-input-field>
+            <lightning-button type="submit" label="Book Appointment"></lightning-button>
+        </lightning-record-edit-form>
+    </lightning-card>
+</template>
