@@ -1,0 +1,32 @@
+<template>
+    <lightning-card title="Patient Dashboard">
+        <div class="slds-p-around_medium">
+            <h3>Appointments</h3>
+            <template if:true={appointments}>
+                <ul>
+                    <template for:each={appointments} for:item="appt">
+                        <li key={appt.Id}>{appt.Doctor__c} - {appt.Appointment_Date__c} - {appt.Reason__c}</li>
+                    </template>
+                </ul>
+            </template>
+
+            <h3>Prescriptions</h3>
+            <template if:true={prescriptions}>
+                <ul>
+                    <template for:each={prescriptions} for:item="presc">
+                        <li key={presc.Id}>{presc.Medicine__c} - {presc.Dosage__c} - {presc.Date_Issued__c}</li>
+                    </template>
+                </ul>
+            </template>
+
+            <h3>Insurance Claims</h3>
+            <template if:true={claims}>
+                <ul>
+                    <template for:each={claims} for:item="claim">
+                        <li key={claim.Id}>{claim.Claim_Amount__c} - {claim.Status__c} - {claim.Date_Submitted__c}</li>
+                    </template>
+                </ul>
+            </template>
+        </div>
+    </lightning-card>
+</template>
