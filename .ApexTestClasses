@@ -1,0 +1,45 @@
+@isTest
+public class ApexTestClasses {
+
+    @isTest static void testBatchInsuranceClaims() {
+        // Create test data
+        List<Insurance_Claim__c> claims = new List<Insurance_Claim__c>();
+        for(Integer i=0; i<5; i++){
+            claims.add(new Insurance_Claim__c(Name='TestClaim'+i, Claim_Status__c='Pending'));
+        }
+        insert claims;
+
+        // Test batch
+        Test.startTest();
+        Database.executeBatch(new PendingInsuranceClaimBatch(), 2);
+        Test.stopTest();
+
+        // Verify updates
+        for(Insurance_Claim__c c : [SELECT Claim_Status__c FROM Insurance_Claim__c]){
+            System.assertEquals('Processing', c.Claim_Status__c);
+        }
+    }
+
+    @isTest static void testQueueable() {
+        List<Insurance_Claim__c> claims = new List<Insurance_Claim__c>();
+        for(Integer i=0; i<5; i++){
+            claims.add(new Insurance_Claim__c(Name='QueueClaim'+i, Claim_Status__c='Pending'));
+        }
+        insert claims;
+
+        Test.startTest();
+        System.enqueueJob(new BulkInsuranceClaimProcessor());
+        Test.stopTest();
+
+        for(Insurance_Claim__c c : [SELECT Claim_Status__c FROM Insurance_Claim__c]){
+            System.assertEquals('Processing', c.Claim_Status__c);
+        }
+    }
+
+    @isTest static void testFutureMethod() {
+        Test.startTest();
+        SMSReminderService.sendSMS(new List<String>{'+911234567890'}, 'Test Message');
+        Test.stopTest();
+        System.assert(true); // Just ensure it runs without exception
+    }
+}
